@@ -62,32 +62,27 @@ view { sales, tableState, query } =
         lowerQuery =
             String.toLower query
 
-        acceptablePeople =
+        acceptableSales =
             List.filter (String.contains lowerQuery << String.toLower << .title) sales
     in
         div []
             [ h1 [] [ text "Sales" ]
             , input [ placeholder "Search by Name", onInput SetQuery ] []
-            , Table.view config tableState acceptablePeople
+            , Table.view config tableState acceptableSales
             ]
 
 
 config : Table.Config Sale Msg
 config =
     Table.config
-        { toId = .title
+        { toId = .saleId >> toString
         , toMsg = SetTableState
         , columns =
             [ Table.intColumn "ID" .saleId
-            , Table.stringColumn "Status" .status
+            , Table.stringColumn "Status" (.status >> deconstructStatus)
             , Table.stringColumn "Title" .title
-            , Table.stringColumn "Type" .saleType
+            , Table.stringColumn "Type" (.saleType >> deconstructType)
             , Table.stringColumn "Mail Start" .mailStart
-            , Table.stringColumn "Mail End" .mailEnd
-            , Table.stringColumn "Live Start" .liveStart
-            , Table.stringColumn "Live End" .liveEnd
-            , Table.stringColumn "created" .created
-            , Table.stringColumn "created" .updated
             ]
         }
 
@@ -98,19 +93,53 @@ config =
 
 type alias Sale =
     { saleId : Int
-    , status : String
+    , status : SaleStatus
     , title : String
-    , saleType : String
+    , saleType : SaleType
     , mailStart : String
-    , mailEnd : String
-    , liveStart : String
-    , liveEnd : String
-    , created : String
-    , updated : String
     }
+
+
+type SaleStatus
+    = SaleNew
+    | SaleInProcess
+    | SalePublishedOnSite
+
+
+deconstructStatus : SaleStatus -> String
+deconstructStatus status =
+    case status of
+        SaleNew ->
+            "New"
+
+        SaleInProcess ->
+            "In Process"
+
+        SalePublishedOnSite ->
+            "Published On Site"
+
+
+type SaleType
+    = Mail
+    | Live
+    | MailAndLive
+
+
+deconstructType : SaleType -> String
+deconstructType status =
+    case status of
+        Mail ->
+            "Mail"
+
+        Live ->
+            "Live"
+
+        MailAndLive ->
+            "Mail & live"
 
 
 sales : List Sale
 sales =
-    [ Sale 1732 "new" "Sale 1" "Mail & Live" "22/10/2013" "17/10/2016" "17/10/2016" "17/10/2016" "24/08/2016" "25/08/2016"
+    [ Sale 1732 SaleNew "Sale 1" Mail "22/10/2013"
+    , Sale 1733 SaleInProcess "foo" MailAndLive "22/10/2013"
     ]
