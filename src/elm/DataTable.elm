@@ -5,6 +5,7 @@ import Html.Attributes exposing (placeholder)
 import Html.Events exposing (onInput)
 import String
 import Table
+import Date
 
 
 -- MODEL
@@ -82,9 +83,63 @@ config =
             , Table.stringColumn "Status" (.status >> deconstructStatus)
             , Table.stringColumn "Title" .title
             , Table.stringColumn "Type" (.saleType >> deconstructType)
-            , Table.stringColumn "Mail Start" .mailStart
+            , Table.stringColumn "Mail Start" (.mailStart >> toDateString)
             ]
         }
+
+
+toDateString : Date.Date -> String
+toDateString date =
+    let
+        day =
+            Date.day date |> toString
+
+        monthToNumber : Date.Month -> String
+        monthToNumber stringDate =
+            case stringDate of
+                Date.Jan ->
+                    "01"
+
+                Date.Feb ->
+                    "02"
+
+                Date.Mar ->
+                    "03"
+
+                Date.Apr ->
+                    "04"
+
+                Date.May ->
+                    "01"
+
+                Date.Jun ->
+                    "02"
+
+                Date.Jul ->
+                    "03"
+
+                Date.Aug ->
+                    "04"
+
+                Date.Sep ->
+                    "09"
+
+                Date.Oct ->
+                    "10"
+
+                Date.Nov ->
+                    "11"
+
+                Date.Dec ->
+                    "12"
+
+        month =
+            monthToNumber (Date.month date)
+
+        year =
+            Date.year date |> toString
+    in
+        day ++ "/" ++ month ++ "/" ++ year
 
 
 
@@ -96,7 +151,7 @@ type alias Sale =
     , status : SaleStatus
     , title : String
     , saleType : SaleType
-    , mailStart : String
+    , mailStart : Date.Date
     }
 
 
@@ -140,8 +195,8 @@ deconstructType status =
 
 sales : List Sale
 sales =
-    [ Sale 1732 SaleNew "Sale 1" Mail "22/10/2013"
-    , Sale 1733 SaleInProcess "foo" MailAndLive "22/10/2013"
+    [ Sale 1732 SaleNew "Sale 1" Mail (Date.fromTime 1472715899000)
+    , Sale 1733 SaleInProcess "foo" MailAndLive (Date.fromTime 1472715899000)
     ]
 
 
