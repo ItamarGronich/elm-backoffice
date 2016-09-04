@@ -82,6 +82,12 @@ config =
             , Table.stringColumn "Status" .status
             , Table.stringColumn "Title" .title
             , Table.stringColumn "Type" .saleType
+            , Table.stringColumn "Mail Start" .mailStart
+            , Table.stringColumn "Mail End" .mailEnd
+            , Table.stringColumn "Live Start" .liveStart
+            , Table.stringColumn "Live End" .liveEnd
+            , Table.stringColumn "created" .created
+            , Table.stringColumn "created" .updated
             ]
         }
 
@@ -95,10 +101,16 @@ type alias Sale =
     , status : String
     , title : String
     , saleType : String
+    , mailStart : String
+    , mailEnd : String
+    , liveStart : String
+    , liveEnd : String
+    , created : String
+    , updated : String
     }
 
 
 sales : List Sale
 sales =
-    [ Sale 1732 "George Washington" "Westmoreland County" "Virginia"
+    [ Sale 1732 "new" "Sale 1" "Mail & Live" "22/10/2013" "17/10/2016" "17/10/2016" "17/10/2016" "24/08/2016" "25/08/2016"
     ]
