@@ -186,6 +186,7 @@ gulp.task("serve:dev", ["build"], function () {
   bs = browserSync({
     notify: true,
     // tunnel: "",
+    open: false,
     server: {
       baseDir: "serve"
     }
@@ -207,6 +208,7 @@ gulp.task("serve:prod", function () {
   bs = browserSync({
     notify: false,
     // tunnel: true,
+    open: false,
     server: {
       baseDir: "dist"
     }

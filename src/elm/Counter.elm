@@ -19,7 +19,9 @@ initialModel =
 
 init : ( Model, Cmd Msg )
 init =
-    ( initialModel, Cmd.none )
+    ( initialModel
+    , Cmd.none
+    )
 
 
 
