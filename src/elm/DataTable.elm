@@ -6,6 +6,7 @@ import Html.Events exposing (onInput)
 import String
 import Table
 import Date
+import Json.Decode exposing (Decoder, int, string, object5, (:=), list)
 
 
 -- MODEL
@@ -196,8 +197,23 @@ deconstructType status =
 sales : List Sale
 sales =
     [ Sale 1732 SaleNew "Sale 1" Mail (Date.fromTime 1472715899000)
-    , Sale 1733 SaleInProcess "foo" MailAndLive (Date.fromTime 1472715899000)
+    , Sale 1733 SaleInProcess "foo" MailAndLive (Date.fromTime 1483725899000)
     ]
+
+
+saleObjectDecoder : Decoder Sale
+saleObjectDecoder =
+    object5 Sale
+        ("id" := int)
+        ("status" := string)
+        ("label" := string)
+        ("sale_type" := string)
+        ("mail_sale_date_from" := int)
+
+
+salesDecoder : Decoder (List Sale)
+salesDecoder =
+    list saleObjectDecoder
 
 
 salesJson : String
