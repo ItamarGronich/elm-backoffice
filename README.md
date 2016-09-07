@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/.svg?branch=master)](https://travis-ci.org/)
-
-> yo-elm
+# Elm implementations of components present in the [circuitauction backoffice](https://github.com/Gizra/circuitauction-backoffice) app.
 
 ## Installation
 
