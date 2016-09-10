@@ -9,3 +9,6 @@ import DataTable exposing (..)
 
 decodeSale : Json.Value -> Sale
 decodeSale payload =
+  case decodeValue saleDecoder payload of
+    Ok val ->
+    Err message -> 

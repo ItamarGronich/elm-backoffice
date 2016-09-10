@@ -155,11 +155,21 @@ type alias Sale =
     , mailStart : Date.Date
     }
 
+emptySale : Sale
+emptySale =
+      { saleId = 0
+      , status = NullStatus
+      , title = ""
+      , saleType = NullSaleType
+      , mailStart = 0
+      }
+
 
 type SaleStatus
     = SaleNew
     | SaleInProcess
     | SalePublishedOnSite
+    | NullStatus
 
 
 deconstructStatus : SaleStatus -> String
@@ -179,6 +189,7 @@ type SaleType
     = Mail
     | Live
     | MailAndLive
+    | NullSaleType
 
 
 deconstructType : SaleType -> String
