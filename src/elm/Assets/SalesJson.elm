@@ -1,4 +1,4 @@
-module SalesJson exposing (..)
+module Assets.SalesJson exposing (..)
 
 
 salesJson : String
