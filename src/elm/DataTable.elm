@@ -155,14 +155,15 @@ type alias Sale =
     , mailStart : Date.Date
     }
 
+
 emptySale : Sale
 emptySale =
-      { saleId = 0
-      , status = NullStatus
-      , title = ""
-      , saleType = NullSaleType
-      , mailStart = 0
-      }
+    { saleId = 0
+    , status = NullStatus
+    , title = ""
+    , saleType = NullSaleType
+    , mailStart = Date.fromTime 1472715899000
+    }
 
 
 type SaleStatus
@@ -184,6 +185,9 @@ deconstructStatus status =
         SalePublishedOnSite ->
             "Published On Site"
 
+        NullStatus ->
+            ""
+
 
 type SaleType
     = Mail
@@ -203,6 +207,9 @@ deconstructType status =
 
         MailAndLive ->
             "Mail & live"
+
+        NullSaleType ->
+            ""
 
 
 sales : List Sale
