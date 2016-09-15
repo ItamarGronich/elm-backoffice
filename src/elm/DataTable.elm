@@ -6,7 +6,10 @@ import Html.Events exposing (onInput)
 import String
 import Table
 import Date
-import Json.Decode exposing (Decoder, int, string, object5, (:=), list)
+import Decode.Sale exposing (..)
+import Decode.Status exposing (constructStatus, deconstructStatus)
+import Http
+import Json.Decode exposing (list)
 
 
 -- MODEL
@@ -82,9 +85,10 @@ config =
         , columns =
             [ Table.intColumn "ID" .saleId
             , Table.stringColumn "Status" (.status >> deconstructStatus)
-            , Table.stringColumn "Title" .title
-            , Table.stringColumn "Type" (.saleType >> deconstructType)
-            , Table.stringColumn "Mail Start" (.mailStart >> toDateString)
+              {- , Table.stringColumn "Title" .title
+                 , Table.stringColumn "Type" (.saleType >> deconstructType)
+                 , Table.stringColumn "Mail Start" (.mailStart >> toDateString)
+              -}
             ]
         }
 
@@ -147,73 +151,9 @@ toDateString date =
 -- PEOPLE
 
 
-type alias Sale =
-    { saleId : Int
-    , status : SaleStatus
-    , title : String
-    , saleType : SaleType
-    , mailStart : Date.Date
-    }
+url =
+    "http://localhost:3000/assets/sales.json"
 
 
-emptySale : Sale
-emptySale =
-    { saleId = 0
-    , status = NullStatus
-    , title = ""
-    , saleType = NullSaleType
-    , mailStart = Date.fromTime 1472715899000
-    }
-
-
-type SaleStatus
-    = SaleNew
-    | SaleInProcess
-    | SalePublishedOnSite
-    | NullStatus
-
-
-deconstructStatus : SaleStatus -> String
-deconstructStatus status =
-    case status of
-        SaleNew ->
-            "New"
-
-        SaleInProcess ->
-            "In Process"
-
-        SalePublishedOnSite ->
-            "Published On Site"
-
-        NullStatus ->
-            ""
-
-
-type SaleType
-    = Mail
-    | Live
-    | MailAndLive
-    | NullSaleType
-
-
-deconstructType : SaleType -> String
-deconstructType status =
-    case status of
-        Mail ->
-            "Mail"
-
-        Live ->
-            "Live"
-
-        MailAndLive ->
-            "Mail & live"
-
-        NullSaleType ->
-            ""
-
-
-sales : List Sale
-sales =
-    [ Sale 1732 SaleNew "Sale 1" Mail (Date.fromTime 1472715899000)
-    , Sale 1733 SaleInProcess "foo" MailAndLive (Date.fromTime 1483725899000)
-    ]
+getAndParseSales =
+    Http.get (list Decode.Sale.decodeSale) url
