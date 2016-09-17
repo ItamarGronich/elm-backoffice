@@ -1,8 +1,8 @@
 module Assets.SalesJson exposing (..)
 
 
-salesJson : String
-salesJson =
+sales : String
+sales =
     """
   [{
     "id": 7,
@@ -328,8 +328,8 @@ salesJson =
 """
 
 
-saleJson : String
-saleJson =
+sale : String
+sale =
     """
     {
       "id": 7,

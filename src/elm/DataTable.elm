@@ -7,9 +7,7 @@ import String
 import Table
 import Date
 import Decode.Sale exposing (..)
-import Decode.Status exposing (constructStatus, deconstructStatus)
-import Http
-import Json.Decode exposing (list)
+import Assets.SalesJson exposing (..)
 
 
 -- MODEL
@@ -68,7 +66,7 @@ view { sales, tableState, query } =
             String.toLower query
 
         acceptableSales =
-            List.filter (String.contains lowerQuery << String.toLower << .title) sales
+            sales
     in
         div []
             [ h1 [] [ text "Sales" ]
@@ -84,11 +82,6 @@ config =
         , toMsg = SetTableState
         , columns =
             [ Table.intColumn "ID" .saleId
-            , Table.stringColumn "Status" (.status >> deconstructStatus)
-              {- , Table.stringColumn "Title" .title
-                 , Table.stringColumn "Type" (.saleType >> deconstructType)
-                 , Table.stringColumn "Mail Start" (.mailStart >> toDateString)
-              -}
             ]
         }
 
@@ -151,9 +144,6 @@ toDateString date =
 -- PEOPLE
 
 
-url =
-    "http://localhost:3000/assets/sales.json"
-
-
-getAndParseSales =
-    Http.get (list Decode.Sale.decodeSale) url
+sales : List Sale
+sales =
+    Decode.Sale.sales Assets.SalesJson.sales
