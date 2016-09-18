@@ -82,6 +82,7 @@ config =
         , toMsg = SetTableState
         , columns =
             [ Table.intColumn "ID" .saleId
+            , Table.stringColumn "Status" .status
             ]
         }
 
