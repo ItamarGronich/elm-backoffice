@@ -14,32 +14,3 @@ type alias Model =
 initialModel : Model
 initialModel =
     { activePage = Sales }
-
-
-encodePage : String -> Page
-encodePage text =
-    case text of
-        "Sales" ->
-            Sales
-
-        "Items" ->
-            Items
-
-        "Clients" ->
-            Clients
-
-        _ ->
-            Sales
-
-
-decodePage : Page -> String
-decodePage page =
-    case page of
-        Sales ->
-            "Sales"
-
-        Items ->
-            "Items"
-
-        Clients ->
-            "Clients"
