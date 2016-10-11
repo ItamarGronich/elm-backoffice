@@ -6,8 +6,7 @@ import Html.Events exposing (onInput)
 import String
 import Table
 import Date
-import Decode.Sale exposing (..)
-import Assets.SalesJson exposing (..)
+import Json.Decode exposing (Decoder, int, string, object5, (:=), list)
 
 
 -- MODEL
@@ -66,7 +65,7 @@ view { sales, tableState, query } =
             String.toLower query
 
         acceptableSales =
-            sales
+            List.filter (String.contains lowerQuery << String.toLower << .title) sales
     in
         div []
             [ h1 [] [ text "Sales" ]
@@ -82,6 +81,10 @@ config =
         , toMsg = SetTableState
         , columns =
             [ Table.intColumn "ID" .saleId
+            , Table.stringColumn "Status" (.status >> deconstructStatus)
+            , Table.stringColumn "Title" .title
+            , Table.stringColumn "Type" (.saleType >> deconstructType)
+            , Table.stringColumn "Mail Start" (.mailStart >> toDateString)
             ]
         }
 
@@ -144,6 +147,73 @@ toDateString date =
 -- PEOPLE
 
 
+type alias Sale =
+    { saleId : Int
+    , status : SaleStatus
+    , title : String
+    , saleType : SaleType
+    , mailStart : Date.Date
+    }
+
+
+emptySale : Sale
+emptySale =
+    { saleId = 0
+    , status = NullStatus
+    , title = ""
+    , saleType = NullSaleType
+    , mailStart = Date.fromTime 1472715899000
+    }
+
+
+type SaleStatus
+    = SaleNew
+    | SaleInProcess
+    | SalePublishedOnSite
+    | NullStatus
+
+
+deconstructStatus : SaleStatus -> String
+deconstructStatus status =
+    case status of
+        SaleNew ->
+            "New"
+
+        SaleInProcess ->
+            "In Process"
+
+        SalePublishedOnSite ->
+            "Published On Site"
+
+        NullStatus ->
+            ""
+
+
+type SaleType
+    = Mail
+    | Live
+    | MailAndLive
+    | NullSaleType
+
+
+deconstructType : SaleType -> String
+deconstructType status =
+    case status of
+        Mail ->
+            "Mail"
+
+        Live ->
+            "Live"
+
+        MailAndLive ->
+            "Mail & live"
+
+        NullSaleType ->
+            ""
+
+
 sales : List Sale
 sales =
-    Decode.Sale.sales Assets.SalesJson.sales
+    [ Sale 1732 SaleNew "Sale 1" Mail (Date.fromTime 1472715899000)
+    , Sale 1733 SaleInProcess "foo" MailAndLive (Date.fromTime 1483725899000)
+    ]
