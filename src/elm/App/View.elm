@@ -9,7 +9,6 @@ import Menu.View exposing (menu)
 view : Model -> Html.Html Msg
 view model =
     div []
-        [ h1 []
-            [ text (toString model.activePage) ]
-        , menu
+        [ (menu model)
+        , h1 [] [ text (toString model.activePage) ]
         ]

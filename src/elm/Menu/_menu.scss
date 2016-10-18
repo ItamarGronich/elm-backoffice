@@ -1,0 +1,19 @@
+.Menu {
+  list-style: none;
+  li {
+    display: inline
+  }
+}
+
+.Menu-item {
+  font: bold 24px Helvetica, sans-serif;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+
+.Menu-item.isActive {
+  border-bottom: solid 2px black;
+}
